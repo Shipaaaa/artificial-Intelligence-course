@@ -44,24 +44,29 @@ object Main {
   private val creditResultNode = createCreditResultNode
 
   def main(args: Array[String]) {
-    ageNode.observe(ADULT)
-    hasAnotherCreditNode.observe(NONE)
+//    ageNode.observe(ADULT)
+//    hasAnotherCreditNode.observe(NONE)
     hasRegularIncomeNode.observe(YES)
     ratioOfDebtsToIncomeNode.observe(LOW)
-    reliabilityOfEmployerNode.observe(HIGH)
+    reliabilityOfEmployerNode.observe(LOW)
 
-    incomeNode.observe(HIGH)
-    assetsNode.observe(HIGH)
-    creditHistoryNode.observe(EXCELLENT)
-    futureIncomeNode.observe(PROMISING)
+//    incomeNode.observe(HIGH)
+//    assetsNode.observe(HIGH)
+//    creditHistoryNode.observe(EXCELLENT)
+//    futureIncomeNode.observe(PROMISING)
     reliabilityNode.observe(YES)
 
-    val alg = VariableElimination(creditResultNode)
-    alg.start
+    creditResultNode.observe(YES)
 
-    println("Вероятность успешного погашения кредита: " + alg.probability(creditResultNode, YES))
+    val creditResultAlg = VariableElimination(creditResultNode)
+    val incomeNodeAlg = VariableElimination(incomeNode)
+    incomeNodeAlg.start
 
-    alg.kill
+    println("Вероятность income h: " + incomeNodeAlg.probability(incomeNode, HIGH))
+    println("Вероятность income m: " + incomeNodeAlg.probability(incomeNode, MEDIUM))
+    println("Вероятность income l: " + incomeNodeAlg.probability(incomeNode, LOW))
+
+    incomeNodeAlg.kill
   }
 
   private def createIncomeNode: RichCPD2[Boolean, Symbol, Symbol] = {
